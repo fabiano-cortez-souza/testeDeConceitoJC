@@ -1,0 +1,345 @@
+swagger: '2.0'
+info:
+  description: |-
+    Transaction snapshots.
+  version: 1.0.0_release
+  title: API TransactionHistory
+host: localhost
+basePath: /api
+schemes:
+  - http
+tags:
+  - name: TransactionHistory
+    description: ''
+paths:
+  /v1/transactionHistory:
+### POST ###
+    post:
+      tags:
+        - TransactionHistory
+      operationId: SaveTransactionSnapshot
+      description: |-
+        Insert a new transaction snapshot into the history.
+      produces:
+        - "application/json;charset=utf-8"
+      consumes:
+        - "application/json;charset=utf-8"
+      deprecated: false
+      parameters:
+        - name: TransactionHistory
+          required: true
+          in: body
+          description: Transaction snapshot model
+          schema:
+            $ref: '#/definitions/TransactionHistory'
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            type: "object"
+### GET ###            
+    get:
+      tags:
+        - TransactionHistory
+      operationId: FindTransactionSnapshot
+      description: |-
+        Find transaction snapshots.
+      produces:
+        - "application/json"
+      parameters:
+        - name: msisdn
+          in: query
+          required: true
+          type: string
+          description: 'Subscriber Number'
+        
+        - name: startDate
+          in: query
+          required: true
+          type: string
+          description: 'startDate  YYYYYMMDD  Filter start date'  
+        
+        - name: endDate
+          in: query
+          required: true
+          type: string
+          description: 'endDate YYYYYMMDD Filter end date'  
+        
+        - name: numRecord
+          in: query
+          required: true
+          type: string
+          description: 'Number of records per search indicator'  
+        
+        - name: numPage
+          in: query
+          required: false
+          type: string
+          description: 'Paging number indicator'   
+          
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            type: "object"
+
+# V2
+  /v2/transactionHistory:
+### POST ###
+    post:
+      tags:
+        - TransactionHistoryV2
+      operationId: TransactionHistoryNotificaionRefil
+      description: |-
+        Insert a new transaction snapshot into the history - Notification Refil Scope.
+      produces:
+        - "application/json;charset=utf-8"
+      consumes:
+        - "application/json;charset=utf-8"
+      deprecated: false
+      parameters:
+        - name: TransactionHistoryV2
+          required: false
+          in: body
+          description: Transaction snapshot - Notification Refil Scope model
+          schema:
+            $ref: '#/definitions/TransactionHistoryV2'
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            type: "object"
+### GET ###
+    get:
+      tags:
+        - TransactionHistoryV2
+      operationId: TransactionHistoryFindV2 
+      description: |-
+         Find transaction snapshots - Notification Refil Scope.
+      produces:
+        - "application/json"
+      parameters:
+        - name: msisdn
+          in: query
+          required: true
+          type: string
+          description: 'Subscriber Number'
+        
+        - name: startDate
+          in: query
+          required: true
+          type: string
+          description: 'startDate  YYYYYMMDD  Filter start date'  
+        
+        - name: endDate
+          in: query
+          required: true
+          type: string
+          description: 'endDate YYYYYMMDD Filter end date'  
+        
+        - name: numRecord
+          in: query
+          required: true
+          type: string
+          description: 'Number of records per search indicator'  
+        
+        - name: numPage
+          in: query
+          required: false
+          type: string
+          description: 'Paging number indicator'   
+          
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            type: "object"
+
+definitions:
+  TransactionHistory:
+    description: |-
+      Transaction Snapshot Model Reference
+    type: object
+    properties:
+      timestamp:
+        description: Date transaction notification timestamp
+        type: string
+      msisdn:
+        description: Subscriber Number
+        type: string
+      type:
+        description: refil, adjust Cred, adjust Deb
+        type: string
+      amount:
+        description: transaction amount
+        type: string
+      description:
+        description: ''
+        type: string
+      transactionID:
+        description: The transactionID parameter is used to specify the operation
+        type: string
+
+########################### V2 INI ###########################
+  TransactionHistoryV2:
+    description: Transacation snapshot - refil scope
+    type: object
+    properties:
+      accountInformationAfterRefill:
+        description: Revisar
+        $ref: '#/definitions/accountInformationAfterRefill'
+      accountInformationBeforeRefill:
+        description: Revisar
+        $ref: '#/definitions/accountInformationBeforeRefill'
+      activationDate:
+        description: Data
+        type: string
+      currentServiceClass:        
+        description: A ver
+        type: string
+      hostName:  
+        description: A ver
+        type: string
+      originHostName:        
+        description: A ver
+        type: string
+      originNodeType:
+        description: A ver
+        type: string
+      originOperatorID:
+        description: A ver
+        type: string
+      refillProfileID:
+        description: A ver
+        type: string
+      requestedRefillType:
+        description: A ver
+        type: string
+      subscriberNumber:
+        description: A ver
+        type: string
+      timeStamp:
+        description: A ver
+        type: string
+      transactionAmount:
+        description: A ver
+        type: string
+      transactionCurrency:
+        description: A ver
+        type: string
+      voucherBasedRefill:
+        description: A ver
+        type: string
+      externalData1:
+        description: A ver
+        type: string
+      originTransactionID:
+        description: A ver
+        type: string
+      voucherSerialNumber:
+        description: A ver
+        type: string
+      voucherGroupID:
+        description: A ver
+        type: string
+      voucherActivationCode:
+        description: A ver
+        type: string
+    required: 
+      - originNodeType
+      - originHostName
+      - originOperatorID
+      - hostName
+      - timeStamp
+      - originTransactionID
+      - currentServiceClass
+      - voucherBasedRefill
+      - transactionAmount
+      - transactionCurrency
+      - refillProfileID
+      - subscriberNumber
+      - accountInformationAfterRefill
+      - accountInformationBeforeRefill
+      - activationDate
+      - externalData1
+      - requestedRefillType
+#
+  accountInformationAfterRefill:
+    description: |-
+      Account information after refil.
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccounts:
+        type: object
+        $ref: '#/definitions/dedicatedAccounts'
+      accountExpiryDate:
+        description: Data
+        type: string
+      serviceFeeExpiryDate:
+        description: Data
+        type: string
+      supervisionExpiryDate:
+        description: Data
+        type: string       
+    required:
+      - accountBalance
+#      - dedicatedAccounts
+      - serviceFeeExpiryDate
+      - supervisionExpiryDate  
+#
+  accountInformationBeforeRefill:        
+    description: |-
+      Account information before refil.
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccounts:
+        type: object
+        $ref: '#/definitions/dedicatedAccounts'
+      accountExpiryDate:
+        description: Data
+        type: string
+      serviceFeeExpiryDate:
+        description: Data
+        type: string
+      supervisionExpiryDate:
+        description: Data
+        type: string       
+    required:
+      - accountBalance
+#      - dedicatedAccounts
+      - serviceFeeExpiryDate
+      - supervisionExpiryDate  
+#
+  dedicatedAccounts:
+    description: |-
+      Dedicated Accounts
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccountID:
+        description: Valor 
+        type: string

@@ -1,0 +1,18 @@
+indexes:
+- kind: transactionHistory
+  properties:
+  - name: msisdn
+  - name: timestamp  
+    direction: desc  
+- kind: processedTransactionHistory
+  properties:
+  - name: processedTransactionHistoryId
+    direction: asc  
+- kind: reprocessedTransactionHistory
+  properties:
+  - name: dateToBeProcessed
+    direction: asc  
+- kind: tokenAccess
+  properties:
+  - name: timestampInsere
+    direction: asc  

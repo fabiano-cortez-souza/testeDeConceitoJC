@@ -1,0 +1,34 @@
+server:
+  port: 8088
+
+#spring:
+#  kafka:
+#    producer:
+#      bootstrap-servers: 192.168.99.100:9092
+#    consumer:
+#      groupId: customerBalance
+      
+## Dynatrace
+
+#management:
+#  server:
+#    port: 8091
+#  metrics:
+#    export:
+#      dynatrace:  
+#        uri: https://vuu92847.live.dynatrace.com
+#        api-token: PXBtS4DETU2L16GtpV9Zx
+#        device-id: customerbalance
+#        group: claroflex-BFF
+#        step: 1m
+#        enabled: true
+#        connect-timeout: 2s        
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    metrics:
+#      enabled: true
+#    health:
+#      show-details: ALWAYS

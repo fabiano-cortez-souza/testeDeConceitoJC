@@ -1,0 +1,158 @@
+swagger: '2.0'
+info:
+  description: |-
+    
+    A claro flex é uma api para recarga de historico.
+
+    ### Resources 
+    - **TransactionHistory** :  teste.
+
+  version: 1.0.0_release
+  title: API TransactionHistory
+host: localhost
+basePath: /
+schemes:
+  - http
+tags:
+  - name: TransactionHistory
+    description: ''
+paths:
+  /api/v1/transactionHistory:
+    post:
+      tags:
+        - TransactionHistory
+      operationId: TransactionHistorySave
+      summary: Save Transaction History
+      description: |-
+        Essa operação visa incluir o save do historico de recarga.
+      produces:
+        - "application/json;charset=utf-8"
+      consumes:
+        - "application/json;charset=utf-8"
+      deprecated: false
+      parameters:
+        - name: TransactionHistory
+          required: true
+          in: body
+          description: insert transaction history
+          schema:
+            $ref: '#/definitions/TransactionHistory'
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      tags:
+        - TransactionHistory
+      operationId: TransactionHistoryFind
+      summary: Find Transaction History
+      description: |-
+        Essa operação visa consultar o historico de regarga.
+      produces:
+        - "application/json"
+      parameters:
+        - name: msisdn
+          in: query
+          required: true
+          type: string
+          description: 'Subscriber Number'
+        
+        - name: startDate
+          in: query
+          required: true
+          type: string
+          description: 'startDate  YYYYYMMDD  Filter start date'  
+        
+        - name: endDate
+          in: query
+          required: true
+          type: string
+          description: 'endDate YYYYYMMDD Filter end date'  
+        
+        - name: numRecord
+          in: query
+          required: true
+          type: string
+          description: 'Number of records per search indicator'  
+        
+        - name: numPage
+          in: query
+          required: false
+          type: string
+          description: 'Paging number indicator'   
+          
+      responses:
+        '200':
+          description: "Success"
+          schema:
+            type: "object"
+        '202':
+          description: "Accepted"
+          schema:
+            $ref: '#/definitions/ErrorModel'
+definitions:
+  stateValue:
+    description: ''
+    type: string
+    enum:
+      - teste1
+      - teste2
+  StateValues:
+    description: ''
+    type: string
+    enum:
+      - inProgress
+      - rejected
+      - done
+      - terminatedWithError
+  ErrorModel:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+  TransactionHistory:
+    description: |-
+      Teste descrição.
+    type: object
+    properties:
+      timestamp:
+        description: Date transaction notification timestamp
+        type: string
+      msisdn:
+        description: Subscriber Number
+        type: string
+      type:
+        description: refil, adjust Cred, adjust Deb
+        type: string
+      amount:
+        description: transaction amount
+        type: string
+      description:
+        description: ''
+        type: string
+      transactionID:
+        description: The transactionID parameter is used to specify the operation
+        type: string
+      #state:
+       # description: ''
+        #$ref: '#/definitions/stateValue'
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/ErrorModel'
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/ErrorModel'
+   

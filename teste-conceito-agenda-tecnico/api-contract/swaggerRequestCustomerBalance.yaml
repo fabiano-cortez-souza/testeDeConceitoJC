@@ -1,0 +1,457 @@
+swagger: "2.0"
+info:
+  description: |-
+    This API provides a convenient way to execute operations inside the cliets wallet. It can be used to perform operations for both, credit and debit.
+  version: 1.0.0_release
+  title: RequestCustomerBalance
+host: localhost
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /requestCustomerBalance:
+    post:
+      tags:
+        - RequestCustomerBalance
+      operationId: requestCustomerBalance
+      summary: Request Customer Balance 
+      produces:
+        - "application/json;charset=utf-8"
+      consumes:
+        - "application/json;charset=utf-8"
+      deprecated: false
+      parameters:
+        - name: RequestCustomerBalance
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/RequestCustomerBalance"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "202":
+          description: "Accepted"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  # /requestOCS:
+  #   post:
+  #     tags:
+  #       - RequestOCS
+  #     operationId: RequestOCS
+  #     summary: Request OCS
+  #     produces:
+  #       - "application/json;charset=utf-8"
+  #       - "application/xml;charset=utf-8"
+  #     consumes:
+  #       - "application/json;charset=utf-8"
+  #       - "application/xml;charset=utf-8"
+  #     deprecated: false
+  #     parameters:
+  #       - name: RequestOCS
+  #         required: true
+  #         in: body
+  #         schema:
+  #           $ref: "#/definitions/MethodCall"
+  #     responses:
+  #       "200":
+  #         description: "Success"
+  #         schema:
+  #           $ref: "#/definitions/ApiResponse"
+  #       "202":
+  #         description: "Accepted"
+  #         schema:
+  #           $ref: "#/definitions/ApiResponse"
+            
+########################## DEFINITIONS ############################    
+definitions:
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        description: Request processing status code.
+        type: string
+        enum: [0,1,2,3,4,5,6,7,8] 
+      messageDetail:
+        description: Request processing status codes description.
+        type: string
+      amount:
+        description: Transaction amount.
+        type: number
+      transactionID:
+        description: The transactionID parameter is used to specify the operation 
+        type: string 
+      httpCode:
+        description: HTTP code.
+        type: number
+      message:
+        description: HTTP codes related message
+        type: string
+      HttpStatusReference:
+        description: Reference documentation of HTTP status.
+        type: object
+        properties:
+          rel:
+            type: string
+          href:
+            type: string
+            example: "https://api.claro.com.br/docs/error_codes.html"
+    required:
+      - code
+      - messageDetail
+      - amount
+      - transactionID
+      - httpCode
+      - message
+      - httpStatusReference
+      - rel
+      - href
+#
+  RequestCustomerBalance:
+    description: |-
+      Request Fields Information.
+    type: object
+    properties:
+      msisdn:
+        description: Subscriber Number
+        type: string
+        pattern: '^[1-9]{1}\d{12}$'
+      timestamp:
+        description: Origin timeStamp
+        type: string
+      transactionID:
+        description: The transactionID parameter is used to specify the operation
+        type: string
+      transactionCode:
+        description: The transactionCode parameter is used to specify the operation in more detail. It will associate a description of a certain operation along with transactionType.
+        type: string
+        enum: [SCC,FAF,CBE,ADJ,TC,TV,REBATE,DEBIT,DEDUCTIONGSM,DEDUCTIONPERIODIC]
+      transactionType:
+        description: The transactionType parameter is used to specify the operation in more detail. It will associate a description of a certain operation along with transactionCode.
+        type: string
+        enum: [EUC,PIN,TT,GSM]
+      amount:
+        description: transaction amount
+        type: string
+      originNodeType:
+        description: The originNodeType parameter contains the origin node type that is set by AIR or provided by an external network element. It contains the type of the logical node from where the operation originated.
+        type: string
+        enum: [EXT,AIR,ADM,UGW,IVR,OGW,SDP]
+      originHostName:
+        description: The originHostName parameter contains an identifier string for the host where the operation originated from.
+        type: string        
+    required:
+    - msisdn
+    - timestamp
+    - transactionID
+    - amount
+    - originNodeType
+    - originHostName
+#    
+############################## V2 INI #############################
+  OnlineRecord: 
+    description: Micro Serviço OCS.
+    type: object
+    properties:
+      methodCall:
+        $ref: "#/definitions/MethodCall"  
+
+  GetBalanceAndDate:
+    description: Micro Serviço OCS.
+    type: object
+    properties:
+      methodCall:
+        $ref: "#/definitions/MethodCall"  
+
+  UpdateBalanceAndDate:
+    description: Micro Serviço OCS.
+    type: object
+    properties:
+      methodCall:
+        $ref: "#/definitions/MethodCall"  
+#  
+  MethodCall:
+    description: Teste descrição.
+    type: object
+    properties:
+      methodName: 
+        description: Cabeçario Revisar 
+        type: string
+        example: "UpdateBalanceAndDate"
+      params:  
+        description: Cabeçario Revisar
+        type: array
+        items:
+          $ref: "#/definitions/paramContainer"
+          
+  paramContainer:
+    description: Cabeçario Revisar
+    type: object
+    properties:
+      param:
+        $ref: "#/definitions/param"
+         
+  param:
+    description: Cabeçario Revisar
+    type: object
+    properties:
+      value:
+        description: Cabeçario Revisar                 
+        properties:      
+          struct:
+            $ref: "#/definitions/struct"
+
+#
+  struct:
+    description:  Mapeamento de estrutura JSON e XML
+    properties:    
+      members:  
+        type: array
+        items:
+          $ref: "#/definitions/member"
+#  
+  member:
+    description:  Mapeamento de estrutura JSON e XML
+    type: object
+    properties:
+      name:
+        description: Nome da variavel
+        type: string
+      value:
+        description: Valor da variavel
+        type: object
+#
+############################# VO's OCS ############################
+  RequestOnlineRecord:
+    description: # Mapeamento VO
+       Chamada OCS via Gateway ZUP.
+    type: object
+    properties: 
+      accountInformationAfterRefill:
+        description: Revisar
+        $ref: "#/definitions/accountInformationAfterRefill"
+      accountInformationBeforeRefill:
+        description: Revisar
+        $ref: "#/definitions/accountInformationBeforeRefill"
+      activationDate:     
+        type: string
+        example: <dateTime.iso8601>20200312T12:00:00+0000</dateTime.iso8601>
+      currentServiceClass:
+        type: string
+        example: <i4>700</i4>
+      hostName:
+        type: string
+        example: <string>airrj12</string>
+      originHostName:
+        type: string
+        example: <string>SERVCEL</string>
+      originNodeType:
+        type: string
+        example: <string>EXT</string>
+      originOperatorID:
+        type: string
+        example: <string>SERVCEL</string>
+      originTransactionID:
+        type: string
+        example: <string>20191023000111222</string>
+      refillProfileID:
+        type: string
+        example: <string>OQ</string>
+      requestedRefillType:
+        type: string
+        example: <i4>0</i4>
+      subscriberNumber:
+        type: string
+        example: <string>5590988205339</string>
+      timeStamp:
+        type: string
+        example: <string>20200323T16:10:02-0300</string>
+      transactionAmount:
+        type: string
+        example: <string>20.000000</string>
+      transactionCurrency:
+        type: string
+        example: <string>BRL</string>
+      voucherBasedRefill:
+        type: string
+        example: <boolean>0</boolean>
+#
+  RequestGetBalanceAndDate:
+    description: # Mapeamento VO
+       Chamada OCS via Gateway ZUP
+    type: object
+    properties:
+      originNodeType:
+        type: string
+        example: "<string>dado</string>"        
+      originHostName:
+        type: string
+        example: "<string>dado</string>"        
+      originTransactionID:
+        type: string
+        example: "<string>dado</string>"        
+      originTimeStamp:
+        type: string
+        example: "<dateTime.iso8601>dado</dateTime.iso8601>"
+      negotiatedCapabilities:
+        type: array
+        items:
+          $ref: "#/definitions/NegotiatedCapabilities"
+      subscriberNumber:
+        type: string
+        example: "<string>dado</string>"
+#
+  RequestUpdateBalanceAndDate:
+    description: # Mapeamento VO 
+      Chamada OCS via Gateway ZUP
+    type: object
+    properties:
+      originNodeType:
+        type: string
+        example: "<string>dado</string>"        
+      originHostName:
+        type: string
+        example: "<string>dado</string>"        
+      originTransactionID:
+        type: string
+        example: "<string>dado</string>"        
+      originTimeStamp:
+        type: string
+        example: "<dateTime.iso8601>dado</dateTime.iso8601>"        
+      subscriberNumber:
+        type: string
+        example: "<string>dado</string>"        
+      adjustmentAmountRelative:
+        type: string
+        example: "<string>dado</string>"        
+      dedicatedAccountUpdateInformation:
+        type: array
+        items:
+          $ref: "#/definitions/DedicatedAccountUpdateInformation"
+      dedicatedAccountID:
+        type: string
+        example: "<int>dado</int>"        
+      dedicatedAccountValueNew:
+        type: string
+        example: "<string>dado</string>"        
+      dedicatedAccountUnitType:
+        type: string
+        example: "<i4>dado</i4>"        
+      transactionCurrency:
+        type: string
+        example: "<string>dado</string>"        
+      negotiatedCapabilities:
+        type: array
+        items:
+          $ref: "#/definitions/NegotiatedCapabilities"
+#
+################## DEPENDENCIAS DE DEFINITIONS ####################
+  DedicatedAccountUpdateInformation: 
+    description: Mapeamento de estrutura JSON e XML
+    type: object 
+    properties:
+      value:
+        description: Cabeçario Revisar
+        type: object
+        properties:
+          array: 
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  value:
+                    type: object
+                    properties:
+                      struct:
+                        $ref: "#/definitions/struct"
+#
+  NegotiatedCapabilities:
+    description: Mapeamento VO e estrutura JSON e XML
+    type: object
+    properties:
+      value:
+        description: Cabeçario Revisar
+        type: object
+        properties:
+          array: 
+            description: Cabeçario Revisar
+            type: array
+            items:
+              type: string
+              example: "<data><value><i4>805646916</i4></value></data><data><value><i4>1576</i4></value></data>" #HARDCODE
+#
+  accountInformationBeforeRefill:        
+    description: # Mapeamento VO
+      Account information before refil.
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccounts:
+        type: object
+        $ref: '#/definitions/dedicatedAccounts'
+   #   accountExpiryDate:   #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+   #     description: Data  #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+   #     type: string       #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+      serviceFeeExpiryDate:
+        description: Data
+        type: string
+      supervisionExpiryDate:
+        description: Data
+        type: string       
+    required:
+      - accountBalance
+      - dedicatedAccounts
+      - serviceFeeExpiryDate
+      - supervisionExpiryDate  
+#
+  accountInformationAfterRefill:
+    description: # Mapeamento VO
+      Account information after refil.
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccounts:
+        type: object
+        $ref: '#/definitions/dedicatedAccounts'
+   #   accountExpiryDate:  #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+   #     description: Data #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+   #     type: string      #### Não presente no OnlineRecord, GetBalanceAndDate e UpdateBalanceAndDate
+      serviceFeeExpiryDate:
+        description: Data
+        type: string
+      supervisionExpiryDate:
+        description: Data
+        type: string       
+    required:
+      - accountBalance
+      - dedicatedAccounts
+      - serviceFeeExpiryDate
+      - supervisionExpiryDate  
+#
+  dedicatedAccounts:
+    description: # Mapeamento VO
+      Dedicated Accounts
+    type: object
+    properties:
+      accountBalance:
+        description: Valor
+        type: string
+      dedicatedAccountID:
+        description: Valor 
+        type: string          
+########################### RESPONSE ##############################
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: "#/definitions/ApiResponse"
+  #Unauthorized:
+  #  description: Unauthorized
+  #  schema:
+  #    $ref: "#/definitions/ApiResponse"  

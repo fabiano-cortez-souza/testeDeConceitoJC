@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "7526d044-5288-41f3-a429-d3fb85db4d51",
+		"name": "API proxies ClaroFlex Request Customer Balance",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth Token - GET-access_token-SaaS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "731a302b-b53e-4eb3-938c-4757cfeef879",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"token\", jsonData.access_token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-client-auth",
+						"type": "text",
+						"value": "Basic {{authorizationKey}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/oauth2/v1/token",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"oauth2",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalances - ConsultaOcsSaldoByMsisdn",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":5511994008007,\n  \"timestamp\": \"20200701T12:34:00-0300\",\n  \"transactionID\": \"1\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalances",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalances"
+					]
+				},
+				"description": "```text\r\nObjetivo: Respons�vel por consultar saldo wallet do cliente na Engenharia\r\n�       Tipo: Inbound\r\n�       Backend + auth:  ZUP Engenharia + key + ip whitelisting\r\n�       Consumidor + auth: ZUP RealWave (Claro Flex) + OAuth\r\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_OK_ADJ",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e235310b-215b-4b48-a649-a468b0773411",
+						"exec": [
+							"pm.environment.set(\"transactionID\",(pm.environment.get(\"transactionID\")*1)+1);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "324c0639-c3ec-41de-b30a-b0e4a0326750",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008007\",\n  \"timestamp\":\"20200827T10:36:37-0300\",\n  \"transactionID\":\"{{transactionID}}\",\n  \"transactionCode\": \"ADJ\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"2000\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				},
+				"description": "```text\r\n Objetivo: Atualizar o hist�rico de recarga de acordo com os dados disponibilizados pela Engenharia.\r\n�       Tipo: C2C\r\n�       Backend + auth:   BFF Claro Flex + key\r\n�       Consumidor + auth: ZUP RealWave (Claro Flex) + OAuth\r\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_OK_DEBIT",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b643b3e8-a5cc-4d49-836d-1ad8cbf8d713",
+						"exec": [
+							"pm.environment.set(\"transactionID\",(pm.environment.get(\"transactionID\")*1)+1);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008007\",\n  \"timestamp\":\"20200827T10:36:37-0300\",\n  \"transactionID\":\"{{transactionID}}\",\n  \"transactionCode\": \"DEBIT\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_NOK_MSISDN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"551199400800X\",\n  \"timestamp\":\"20200827T10:36:37-0300\",\n  \"transactionID\":\"3421123445\",\n  \"transactionCode\": \"DEBIT\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_NOK_TIMESTAMP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008006\",\n  \"timestamp\":\"20200827T10:59:60-0300\",\n  \"transactionID\":\"3421123445\",\n  \"transactionCode\": \"DEBIT\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_NOK_TRANSACTION_ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008006\",\n  \"timestamp\":\"20200827T10:59:59-0300\",\n  \"transactionID\":\"3421123445X\",\n  \"transactionCode\": \"DEBIT\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				},
+				"description": "Campo num�rico"
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_NOK_TRANSACTION_CODE",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008006\",\n  \"timestamp\":\"20200827T10:59:59-0300\",\n  \"transactionID\":\"3421123445\",\n  \"transactionCode\": \"FAB\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				},
+				"description": "Valore validos:\r\nSCC, FAF, CBE, ADJ, TC, TV, REBATE, DEBIT, DEDUCTIONGSM e DEDUCTIONPERIODIC."
+			},
+			"response": []
+		},
+		{
+			"name": "SaaS-/mobile/v1/customerbalanceshistory_NOK_ORIGIN_NODE_TYPE",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"msisdn\":\"5511994008006\",\n  \"timestamp\":\"20200827T10:59:59-0300\",\n  \"transactionID\":\"3421123445\",\n  \"transactionCode\": \"FAB\",\n  \"transactionType\": \"Renova��o Plano\",\n  \"amount\": \"-200\",\n  \"originNodeType\": \"EXT\",\n  \"originHostName\": \"ClaroFlex\"\n}"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerbalanceshistory",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerbalanceshistory"
+					]
+				},
+				"description": "Valore validos:\r\nEXT, AIR, ADM, UGW, IVR, OGW e SDP"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "34eeefae-5ba9-4c4b-b432-f28e0a730229",
+			"key": "transactionID",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}

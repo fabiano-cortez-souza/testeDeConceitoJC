@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "5e7745c4-f900-4552-9240-3a39f958c8b6",
+		"name": "API proxies ClaroFlex Transaction History",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "APIGee-SaaS-Get OAuth Token - GET-access_token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c569e395-e97e-4088-926e-075639ec58a0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"token\", jsonData.access_token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-client-auth",
+						"type": "text",
+						"value": "Basic {{authorizationKey}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/oauth2/v1/token",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"oauth2",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "APIGee-SaaS-GET Transaction History_Consulta",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "msisdn",
+						"value": "5511994008007"
+					}
+				],
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerhistoryrefills?startDate=20201005&endDate=20201005&numRecord=100&numPage=0",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerhistoryrefills"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "20201005"
+						},
+						{
+							"key": "endDate",
+							"value": "20201005"
+						},
+						{
+							"key": "numRecord",
+							"value": "100"
+						},
+						{
+							"key": "numPage",
+							"value": "0"
+						}
+					]
+				},
+				"description": "```text\r\n Objetivo: Retornar hist�rico de recarga de um assinante Claro Flex.\r\n�       Tipo: C2C\r\n�       Backend + auth:  BFF Claro Flex + key\r\n�       Consumidor + auth:  ZUP RealWave (Claro Flex) + OAuth\r\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "APIGee-SaaS-POST Transaction History_OK",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6c04d2c6-292a-49f4-a1b2-26fd63a7c358",
+						"exec": [
+							"pm.environment.set(\"transactionID\",(pm.environment.get(\"transactionID\")*1)+1);\r",
+							"pm.collectionVariables.set(\"Recarga\",\"Esteira\" + pm.environment.get(\"transactionID\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"timestamp\": \"20201005T12:34:00-0300\",\n    \"msisdn\":\"5511994008007\",\n    \"type\":\"refil\",\n    \"amount\": 1000,\n    \"description\":\"{{Recarga}}\",\n    \"transactionID\":\"{{transactionID}}\"\n  }"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerhistoryrefills",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerhistoryrefills"
+					]
+				},
+				"description": "```text\r\n Objetivo: Inserir novo registro no hist�rico de recarga de um assinante Claro Flex.\r\n�       Tipo: C2C\r\n�       Backend + auth:  BFF Claro Flex + key\r\n�       Consumidor + auth:  ZUP RealWave (Claro Flex) + OAuth\r\n```"
+			},
+			"response": []
+		},
+		{
+			"name": "APIGee-SaaS-POST Transaction History_OK_JaExiste",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"timestamp\": \"20200701T12:34:00-0300\",\n    \"msisdn\":\"5511994008007\",\n    \"type\":\"refil\",\n    \"amount\": 1000,\n    \"description\":\"Recarga\",\n    \"transactionID\":\"0654998\"\n  }"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerhistoryrefills",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerhistoryrefills"
+					]
+				},
+				"description": "Massa onde o mesmo j� existe no History  DataStore"
+			},
+			"response": []
+		},
+		{
+			"name": "APIGee-SaaS-POST Transaction History_NOK_TIMESTAMP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"timestamp\": \"20200701T12:A34:00-0300\",\n    \"msisdn\":\"5511994008009\",\n    \"type\":\"refil\",\n    \"amount\": 1000,\n    \"description\":\"Recarga\",\n    \"transactionID\":\"0654998\"\n  }"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerhistoryrefills",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerhistoryrefills"
+					]
+				},
+				"description": "teste"
+			},
+			"response": []
+		},
+		{
+			"name": "APIGee-SaaS-POST Transaction History_NOK_MSISDN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "x-client-auth",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"timestamp\": \"20200701T12:34:00-0300\",\n    \"msisdn\":\"551199400800X\",\n    \"type\":\"refil\",\n    \"amount\": 1000,\n    \"description\":\"Recarga\",\n    \"transactionID\":\"0654998\"\n  }"
+				},
+				"url": {
+					"raw": "{{urlAPIGee}}/mobile/v1/customerhistoryrefills",
+					"host": [
+						"{{urlAPIGee}}"
+					],
+					"path": [
+						"mobile",
+						"v1",
+						"customerhistoryrefills"
+					]
+				},
+				"description": "```text\r\n Objetivo: Atualizar o hist�rico de recarga de acordo com os dados disponibilizados pela Engenharia.\r\n�       Tipo: C2C\r\n�       Backend + auth:   BFF Claro Flex + key\r\n�       Consumidor + auth: ZUP RealWave (Claro Flex) + OAuth\r\n```"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "1cfd5ef6-10b3-4419-8585-eacf6bb80029",
+			"key": "Recarga",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
