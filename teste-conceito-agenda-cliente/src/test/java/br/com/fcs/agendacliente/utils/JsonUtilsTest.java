@@ -40,16 +40,16 @@ class JsonUtilsTest {
 	void validJsonStringShouldReturnValidJavaObject() {
 		
 		String timestamp = ZonedDateTime.now().toString();
-	    String msisdn = StringUtils.repeat("1", Constants.MSISDN_LENGTH);
-	    String type = "refil";
-	    String amount = String.valueOf(Long.MAX_VALUE);
-	    String transactionID = Utils.generateId();
+	    
+	    Double idCliente = 1d;
+        String nome = "teste"; 
+        String endereco = "Rua teste"; 
+        String cpf = "111.111.111-11";
 		
-		String validJsonString = new AgendaClienteVO(timestamp,
-														  msisdn,
-														  type,
-														  amount,
-														  transactionID).toString();
+		String validJsonString = new AgendaClienteVO(idCliente,
+		                                             nome,
+		                                             endereco,
+		                                             cpf).toString();
 		
 		String jsonString = String.valueOf(JsonUtils.parseJsonStringToJavaObject(validJsonString, AgendaClienteVO.class));
 		assertEquals(validJsonString, jsonString);

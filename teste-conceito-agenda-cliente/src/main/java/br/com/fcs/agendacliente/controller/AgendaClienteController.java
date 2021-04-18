@@ -37,31 +37,29 @@ public class AgendaClienteController{
 	private OneAgentSDK oneAgentSdk = OneAgentSDKFactory.createInstance();
 	
 	@PostMapping(value = "/api/v1/transactionHistory/", produces = { "application/json;charset=utf-8" })
-	public ResponseEntity<AgendaClienteApiResponse> transactionHistorySave(@RequestBody AgendaClienteModel transactionHistoryModel, 
+	public ResponseEntity<AgendaClienteApiResponse> transactionHistorySave(@RequestBody AgendaClienteModel agendaClienteModel, 
 	                                                                            HttpServletRequest request, 
 	                                                                            HttpServletResponse response) {
 
-	    LOGGER.info("Entrando no transactionHistorySave = {} ", transactionHistoryModel.getTransactionID());
+	    LOGGER.info("Entrando no AgendaClienteModelSave = {} ", agendaClienteModel.getIdAgenda().toString());
 	    
-	    transactionHistoryModel.setId(transactionHistoryModel.getTransactionID());
-	    transactionHistoryModel.setRequestId(Utils.generateId());
-	    transactionHistoryModel.setEventTimeStamp(DateTime.now().toString());
+	    agendaClienteModel.setCriacaoaAgendaDataHora(DateTime.now().toString());
 	    
 	    String bffKey = getBffKey(request);
 	    
-	    oneAgentSdk.addCustomRequestAttribute("transaction-history-transactionID", transactionHistoryModel.getTransactionID());
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-amount", transactionHistoryModel.getAmount());
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-description", transactionHistoryModel.getDescription());
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-timeStamp", transactionHistoryModel.getTimestamp());
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-type", transactionHistoryModel.getType());
-        getDynatraceMsisdn(transactionHistoryModel.getMsisdn());
-        getDynatraceBffKey(bffKey);
+	    oneAgentSdk.addCustomRequestAttribute("agenda-cliente-cliente-cpf", agendaClienteModel.getCliente().getCpf());
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-cliente-nome", agendaClienteModel.getCliente().getNome());
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-description-fail", agendaClienteModel.getDescricaoFalha());
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-agendamento", agendaClienteModel.getAgendaDataHora());
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-modelo-celular", agendaClienteModel.getModeloCelular());
+        setDynatraceCPF(agendaClienteModel.getCliente().getCpf());
+        setDynatraceBffKey(bffKey);
 	    
-	    AgendaClienteApiResponse apiResponse = transactionHistoryBusiness.saveTransaction(transactionHistoryModel, bffKey);    
+	    AgendaClienteApiResponse apiResponse = transactionHistoryBusiness.saveAgendaCliente(agendaClienteModel, bffKey);    
         
 	    LOGGER.info("apiResponse transactionHistorySave = {} ", apiResponse.getMessageDetail());
         
-	    getDynatraceStatus(apiResponse);
+	    setDynatraceStatus(apiResponse);
 	    
 	    if (apiResponse.getCode() != 0) {
 	        return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
@@ -104,18 +102,18 @@ public class AgendaClienteController{
 	    
 	    String bffKey = getBffKey(request);
       
-	    oneAgentSdk.addCustomRequestAttribute("transaction-history-startDate", startDate);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-endDate", endDate);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-numPage", numPage);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-numRecord", numRecord);
-        getDynatraceMsisdn(msisdn);
-        getDynatraceBffKey(bffKey);	    
+	    oneAgentSdk.addCustomRequestAttribute("agenda-cliente-startDate", startDate);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-endDate", endDate);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-numPage", numPage);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-numRecord", numRecord);
+        setDynatraceCPF(msisdn);
+        setDynatraceBffKey(bffKey);	    
 
         AgendaClienteApiResponse apiResponse = transactionHistoryBusiness.findTransactionHistoryDocuments(transactionHistorySolicitationDTO, bffKey);
         
         LOGGER.info("apiResponse transactionHistoryFind = {} ", apiResponse.getMessageDetail());
         
-        getDynatraceStatus(apiResponse);
+        setDynatraceStatus(apiResponse);
         
         if (apiResponse.getCode() != 0) {
             return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
@@ -144,18 +142,18 @@ public class AgendaClienteController{
         
         String bffKey = getBffKey(request);
         
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-startDate", startDate);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-endDate", endDate);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-numPage", numPage);
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-numRecord", numRecord);
-        getDynatraceMsisdn(msisdn);
-        getDynatraceBffKey(bffKey);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-startDate", startDate);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-endDate", endDate);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-numPage", numPage);
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-numRecord", numRecord);
+        setDynatraceCPF(msisdn);
+        setDynatraceBffKey(bffKey);
         
         AgendaClienteApiResponse apiResponse = transactionHistoryBusiness.findTransactionHistoryDocuments(transactionHistorySolicitation, bffKey);
         
         LOGGER.info("apiResponse = {} ", apiResponse.getMessageDetail());
         
-        getDynatraceStatus(apiResponse);
+        setDynatraceStatus(apiResponse);
         
         if (apiResponse.getCode() != 0) {
             return new ResponseEntity<>(apiResponse, HttpStatus.ACCEPTED);
@@ -164,16 +162,16 @@ public class AgendaClienteController{
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-	private void getDynatraceBffKey(String bffKey) {
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-Key", bffKey);
+	private void setDynatraceBffKey(String bffKey) {
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-Key", bffKey);
     }
 
-	private void getDynatraceMsisdn(String  msisdn) {
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-msisdn", msisdn);
+	private void setDynatraceCPF(String  cpf) {
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-cpf", cpf);
     }
 	
-	private void getDynatraceStatus(AgendaClienteApiResponse apiResponse) {
-        oneAgentSdk.addCustomRequestAttribute("transaction-history-status", apiResponse.getMessageDetail());
+	private void setDynatraceStatus(AgendaClienteApiResponse apiResponse) {
+        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-status", apiResponse.getMessageDetail());
     }
 	
 	private String getBffKey(HttpServletRequest request) {

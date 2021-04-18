@@ -16,11 +16,11 @@ public class AgendaClienteService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AgendaClienteService.class);
 
 	@Autowired
-	private AgendaClienteRepository transactionHistoryRepository;
+	private AgendaClienteRepository agendaClienteRepository;
 
 	public boolean save(AgendaClienteModel transactionHistoryDocument) {
 		try {
-			transactionHistoryRepository.save(transactionHistoryDocument);
+			agendaClienteRepository.save(transactionHistoryDocument);
 			return true;
 		} catch (Exception ex) {
 			LOGGER.error("[SAVE] Exception Error: {} - Cause {}", ex.getMessage(), ex.getClass());
@@ -32,7 +32,7 @@ public class AgendaClienteService {
         try {
             List<AgendaClienteModel> transactionHistoryModels = findTransactionHistoryByMsisdn(msisdn);
             for (AgendaClienteModel transactionHistoryModel : transactionHistoryModels) {
-                transactionHistoryRepository.delete(transactionHistoryModel);    
+                agendaClienteRepository.delete(transactionHistoryModel);    
             }
             return true;
         } catch (Exception ex) {
@@ -43,7 +43,7 @@ public class AgendaClienteService {
 	
 	public boolean deleteAll() {
         try {
-            transactionHistoryRepository.deleteAll();    
+            agendaClienteRepository.deleteAll();    
             return true;
         } catch (Exception ex) {
         	LOGGER.error("[DELETEALL] Exception Error: {} - Cause {}", ex.getMessage(), ex.getClass());
@@ -51,10 +51,10 @@ public class AgendaClienteService {
         }
     }
 	
-	public String eventExists(String transactionId) {
+	public String eventExists(Double agendaID) {
 	    String retorno = "N";
 	    try {
-	        if(transactionHistoryRepository.existsById(transactionId)) {
+	        if(agendaClienteRepository.existsById(agendaID.toString())) {
 	            retorno = "S";
 	        }
 	        return retorno;    
@@ -65,19 +65,19 @@ public class AgendaClienteService {
 	}
 
 	public List<AgendaClienteModel> findTransactionHistoryByMsisdn(String msisdn) {
-		return transactionHistoryRepository.findBymsisdn(msisdn);
+		return agendaClienteRepository.findBymsisdn(msisdn);
 	}
 
 	public long countDocuments(String msisdn, String strDate, String endDate) {
-		return transactionHistoryRepository.countWithTimeStampRange(msisdn, strDate, endDate);
+		return agendaClienteRepository.countWithTimeStampRange(msisdn, strDate, endDate);
 
 	}
 
-	public AgendaClienteRepository getTransactionHistoryRepository() {
-		return transactionHistoryRepository;
+	public AgendaClienteRepository getAgendaClienteRepository() {
+		return agendaClienteRepository;
 	}
 
-	public void setTransactionHistoryRepository(AgendaClienteRepository transactionHistoryRepository) {
-		this.transactionHistoryRepository = transactionHistoryRepository;
+	public void setTransactionHistoryRepository(AgendaClienteRepository agendaClienteRepository) {
+		this.agendaClienteRepository = agendaClienteRepository;
 	}
 }

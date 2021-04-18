@@ -1,42 +1,33 @@
-package br.com.fcs.agendacliente.vo;
+package br.com.fcs.agendacliente.model;
 
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
+import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.data.annotation.Id;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
+@Entity(name = "cliente")
+public class ClienteModel {
 
-import br.com.fcs.agendacliente.utils.JsonUtils;
-
-public class AgendaClienteVO {
-    
     @Id
-    @JsonInclude(Include.NON_NULL)
-    @JsonProperty("idCliente")
+    @Field(name = "idCliente")
     private Double idCliente;
     
-    @JsonInclude(Include.NON_NULL)
-    @JsonProperty("nome")
+    @Field(name = "nome")
     private String nome;
-   
-    @JsonInclude(Include.NON_NULL)
-    @JsonProperty("endereco")
+    
+    @Field(name = "endereco")
     private String endereco;
-   
-    @JsonInclude(Include.NON_NULL)
-    @JsonProperty("cpf")
+    
+    @Field(name = "cpf")
     private String cpf;
-  
-    public AgendaClienteVO() {}
-     
-    public AgendaClienteVO(Double idCliente, String nome, String endereco, String cpf) {
+    
+    public ClienteModel(Double idCliente, String nome, String endereco, String cpf) {
         super();
         this.idCliente = idCliente;
         this.nome = nome;
         this.endereco = endereco;
         this.cpf = cpf;
     }
-
+    
     public Double getIdCliente() {
         return idCliente;
     }
@@ -68,10 +59,4 @@ public class AgendaClienteVO {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
-    @Override
-    public String toString() {
-        return JsonUtils.parseToJsonString(this);
-    }
-    
 }

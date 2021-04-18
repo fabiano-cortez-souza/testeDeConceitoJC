@@ -40,15 +40,13 @@ class UtilsTest {
 	
 	@Test
 	void classToJsonStringShouldReturnJson() {
-		AgendaClienteVO transactionHistoryVO = new AgendaClienteVO();
-		transactionHistoryVO.setAmount("11111");
-		transactionHistoryVO.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-		transactionHistoryVO.setId(Utils.generateId());
-		transactionHistoryVO.setMsisdn("11111111");
-		transactionHistoryVO.setType("refil");
-		transactionHistoryVO.setTimestamp("20191128T14:00:12");
+		AgendaClienteVO agendaClienteVO = new AgendaClienteVO();
+		agendaClienteVO.setCpf("111.111.111-11");
+		agendaClienteVO.setEndereco("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+		//agendaClienteVO.setIdCliente(Double.parseDouble(Utils.generateId().toString()));
+		agendaClienteVO.setNome("refil");
 		Gson gson = new Gson();
-		assertEquals(gson.toJson(transactionHistoryVO), transactionHistoryVO.toString());
+		assertEquals(gson.toJson(agendaClienteVO), agendaClienteVO.toString());
 	}
 	
 	@Test

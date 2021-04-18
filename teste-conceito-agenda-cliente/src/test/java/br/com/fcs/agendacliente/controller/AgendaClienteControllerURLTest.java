@@ -30,20 +30,20 @@ class AgendaClienteControllerURLTest {
     private MockMvc mockMvc;
 	
     @MockBean
-	AgendaClienteController transactionHistoryControllerMock;
+	AgendaClienteController agendaClienteControllerMock;
 
 	@Mock
-	private AgendaClienteService transactionHistoryServiceMock;
+	private AgendaClienteService agendaClienteServiceMock;
 
 	@Mock
 	public AgendaClienteBusiness transactionHistoryBusinessMock;
 
 	@MockBean
-	private AgendaClienteRepository transactionHistoryRepositoryMock;
+	private AgendaClienteRepository agendaClienteRepositoryMock;
 
 	private StringBuilder sbGetPathVariable = new StringBuilder();
 	private StringBuilder sbGetRequestParam = new StringBuilder();
-	private StringBuilder sbPostTransactionHistory = new StringBuilder();
+	private StringBuilder sbPostAgendaCliente = new StringBuilder();
 
 	private final String basePath = "/api/v1/transactionHistory/";
 	private final String msisdn = "5590988205339";
@@ -55,14 +55,14 @@ class AgendaClienteControllerURLTest {
 	@BeforeEach
 	public void setup() {
 		initMocks(this);
-		transactionHistoryServiceMock.setTransactionHistoryRepository(transactionHistoryRepositoryMock);
-		transactionHistoryBusinessMock.setTransactionHistoryService(transactionHistoryServiceMock);
+		agendaClienteServiceMock.setTransactionHistoryRepository(agendaClienteRepositoryMock);
+		transactionHistoryBusinessMock.setTransactionHistoryService(agendaClienteServiceMock);
 	}
 
 	@Test
 	void contexLoadsNotNull() throws Exception {
-		transactionHistoryControllerMock = new AgendaClienteController();
-		assertThat(transactionHistoryControllerMock).isNotNull();
+		agendaClienteControllerMock = new AgendaClienteController();
+		assertThat(agendaClienteControllerMock).isNotNull();
 	}
 
 	@Test
@@ -89,25 +89,26 @@ class AgendaClienteControllerURLTest {
 		this.mockMvc.perform(get(sbGetRequestParam.toString())).andDo(print())
 		                                                       .andExpect(status().isOk());
 	}
-	
+	/**
 	@Test
 	void shouldPostURLSucess() throws Exception {
-		sbPostTransactionHistory.append(basePath);
+		sbPostAgendaCliente.append(basePath);
 
-		AgendaClienteVO transactionHistoryVO = new AgendaClienteVO();
-		transactionHistoryVO.setAmount("123123158");
-		transactionHistoryVO.setDescription("teste");
-		transactionHistoryVO.setMsisdn("5511444445449");
-		transactionHistoryVO.setTimestamp("20191128T14:00:17-0301");
-		transactionHistoryVO.setTransactionID("AasDAsSaAaaSaQqLAaa0");
-		transactionHistoryVO.setType("refil");
+		AgendaClienteVO agendaClienteVO = new AgendaClienteVO();
+		agendaClienteVO.setAmount("123123158");
+		agendaClienteVO.setDescription("teste");
+		agendaClienteVO.setMsisdn("5511444445449");
+		agendaClienteVO.setTimestamp("20191128T14:00:17-0301");
+		agendaClienteVO.setTransactionID("AasDAsSaAaaSaQqLAaa0");
+		agendaClienteVO.setType("refil");
 
-		this.mockMvc.perform(post(sbPostTransactionHistory.toString())
-				  .content(transactionHistoryVO.toString()).contentType("application/json;charset=UTF-8"))
+		this.mockMvc.perform(post(sbPostAgendaCliente.toString())
+				  .content(agendaClienteVO.toString()).contentType("application/json;charset=UTF-8"))
 				  .andDo(print())
 				  .andExpect(status().isOk());
 	}
-
+    /**/
+	
 	@Test
 	void shouldGetPathVariableURLNotSucess() throws Exception {
 		sbGetPathVariable.append(basePath);
@@ -132,10 +133,10 @@ class AgendaClienteControllerURLTest {
 		this.mockMvc.perform(get(sbGetRequestParam.toString())).andDo(print())
 		                                                       .andExpect(status().is4xxClientError());
 	}
-	
+	/**
 	@Test
 	void shouldPostURLNotSucess() throws Exception {
-		sbPostTransactionHistory.append(basePath);
+		sbPostAgendaCliente.append(basePath);
 
 		AgendaClienteVO transactionHistoryVO = new AgendaClienteVO();
 		transactionHistoryVO.setAmount("123123158");
@@ -145,9 +146,10 @@ class AgendaClienteControllerURLTest {
 		transactionHistoryVO.setTransactionID("AasDAsSaAaaSaQqLAaa0");
 		transactionHistoryVO.setType("refil");
 
-		this.mockMvc.perform(post(sbPostTransactionHistory.toString())
+		this.mockMvc.perform(post(sbPostAgendaCliente.toString())
 				  .content(transactionHistoryVO.toString()).contentType("application/json;charset=UTF-8"))
 				  .andDo(print())
 				  .andExpect(status().isOk());
 	}
+	/**/
 }

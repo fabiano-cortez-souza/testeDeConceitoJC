@@ -4,128 +4,87 @@ import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
 import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
 import org.springframework.data.annotation.Id;
 
-@Entity(name = "transactionHistory")
+@Entity(name = "agendaCliente")
 public class AgendaClienteModel {
 
 	@Id
-	@Field(name = "id")
-	private String id;
+	@Field(name = "idAgenda")
+	private Double idAgenda;
 
-	@Field(name = "msisdn")
-	private String msisdn;
+	@Field(name = "cliente")
+	private ClienteModel cliente;
 
-	@Field(name = "type")
-	private String type;
+	@Field(name = "agendaDataHora")
+	private String agendaDataHora;
 
-	@Field(name = "amount")
-	private String amount;
-
-	@Field(name = "description")
-	private String description;
-
-	@Field(name = "transactionID")
-	private String transactionID;
+    @Field(name = "criacaoAgendaDataHora")
+    private String criacaoaAgendaDataHora;	
 	
-	@Field(name = "timestamp")
-	private String timestamp;
-	
-	@Field(name = "eventTimeStamp")
-	private String eventTimeStamp;
-	
-	@Field(name = "requestId")
-	private String requestId;
+	@Field(name = "modeloCelular")
+	private String modeloCelular;
+
+	@Field(name = "descricaoFalha")
+	private String descricaoFalha;
 
 	public AgendaClienteModel() {}
-	
-	public AgendaClienteModel(String timestamp, 
-	                               String id, 
-	                               String msisdn, 
-	                               String type, 
-	                               String amount,
-	                               String description, 
-	                               String transactionID, 
-	                               String requestId, 
-	                               String eventTimeStamp) {
-		this.id = id;
-		this.msisdn = msisdn;
-		this.type = type;
-		this.amount = amount;
-		this.description = description;
-		this.transactionID = transactionID;
-		this.timestamp = timestamp;
-		this.requestId = requestId;
-		this.eventTimeStamp = eventTimeStamp;
-	}
-	
-	public String getId() {
-		return id;
-	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getMsisdn() {
-		return msisdn;
-	}
-
-	public void setMsisdn(String msisdn) {
-		this.msisdn = msisdn;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getAmount() {
-		return amount;
-	}
-
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getTransactionID() {
-        return transactionID;
+    public AgendaClienteModel(Double idAgenda, ClienteModel cliente, String agendaDataHora,
+            String criacaoaAgendaDataHora, String modeloCelular, String descricaoFalha) {
+        super();
+        this.idAgenda = idAgenda;
+        this.cliente = cliente;
+        this.agendaDataHora = agendaDataHora;
+        this.criacaoaAgendaDataHora = criacaoaAgendaDataHora;
+        this.modeloCelular = modeloCelular;
+        this.descricaoFalha = descricaoFalha;
     }
 
-    public void setTransactionID(String transactionID) {
-        this.transactionID = transactionID;
+    public Double getIdAgenda() {
+        return idAgenda;
     }
 
-    public String getTimestamp() {
-		return timestamp;
-	}
+    public void setIdAgenda(Double idAgenda) {
+        this.idAgenda = idAgenda;
+    }
 
-	public void setTimestamp(String timeStamp) {
-		this.timestamp = timeStamp;
-	}
-	public String getRequestId() {
-		return requestId;
-	}
+    public ClienteModel getCliente() {
+        return cliente;
+    }
 
-	public String getEventTimeStamp() {
-		return eventTimeStamp;
-	}
+    public void setCliente(ClienteModel cliente) {
+        this.cliente = cliente;
+    }
 
-	public void setEventTimeStamp(String eventTimeStamp) {
-		this.eventTimeStamp = eventTimeStamp;
-	}
+    public String getAgendaDataHora() {
+        return agendaDataHora;
+    }
 
-	public void setRequestId(String requestId) {
-		this.requestId = requestId;
-	}
+    public void setAgendaDataHora(String agendaDataHora) {
+        this.agendaDataHora = agendaDataHora;
+    }
 
+    public String getCriacaoaAgendaDataHora() {
+        return criacaoaAgendaDataHora;
+    }
+
+    public void setCriacaoaAgendaDataHora(String criacaoaAgendaDataHora) {
+        this.criacaoaAgendaDataHora = criacaoaAgendaDataHora;
+    }
+
+    public String getModeloCelular() {
+        return modeloCelular;
+    }
+
+    public void setModeloCelular(String modeloCelular) {
+        this.modeloCelular = modeloCelular;
+    }
+
+    public String getDescricaoFalha() {
+        return descricaoFalha;
+    }
+
+    public void setDescricaoFalha(String descricaoFalha) {
+        this.descricaoFalha = descricaoFalha;
+    }
+	
 }
