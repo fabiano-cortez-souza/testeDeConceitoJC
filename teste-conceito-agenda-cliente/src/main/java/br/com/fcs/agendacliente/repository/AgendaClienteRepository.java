@@ -12,7 +12,7 @@ import br.com.fcs.agendacliente.model.AgendaClienteModel;
 
 @Repository
 public interface AgendaClienteRepository extends DatastoreRepository<AgendaClienteModel, String> {
-	
+	/*
 	//@Query(value = "{ $and: [{ 'msisdn' : { $eq : ?0 } }, { 'timestamp' : { $gte : ?1, $lte: ?2 } } ]}", count = true)
 	@Query(value = "SELECT * FROM transactionHistory WHERE msisdn = @_msisdn AND timestamp >= @_strDate AND timestamp <= @_endDate", count = true)
 	long countWithTimeStampRange(@Param("_msisdn")  String msisdn,
@@ -26,7 +26,9 @@ public interface AgendaClienteRepository extends DatastoreRepository<AgendaClien
 											           @Param("_strDate") String strDate,
 													   @Param("_endDate") String endDate, 
 													   Pageable pageable);
-	
-	List<AgendaClienteModel> findBymsisdn(String msisdn);
-	
+	/**/
+	List<AgendaClienteModel> findByidAgenda(String idAgenda);
+	/**/
+
+    //long countWithTimeStampRange(String idAgenda, String strDate, String endDate);
 }

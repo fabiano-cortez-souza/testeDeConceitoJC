@@ -174,7 +174,7 @@ public class AgendaClienteBusiness {
         if(apiResponse == null) {
         	
             if(!jUnitTest) {
-                listaByMsisdn = agendaClienteService.findTransactionHistoryByMsisdn(agendaClienteSolicitation.getMsisdn());
+                listaByMsisdn = agendaClienteService.findAgendaByidAgenda(agendaClienteSolicitation.getMsisdn());
             }
             
             adicionaTransactionHistoryModels(agendaClienteSolicitation, listaByMsisdn);

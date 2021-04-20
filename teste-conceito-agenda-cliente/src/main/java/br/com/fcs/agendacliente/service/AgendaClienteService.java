@@ -28,11 +28,11 @@ public class AgendaClienteService {
 		}
 	}
 
-	public boolean deleteMsisdn(String msisdn) {
+	public boolean deleteIdAgenda(String idAgenda) {
         try {
-            List<AgendaClienteModel> transactionHistoryModels = findTransactionHistoryByMsisdn(msisdn);
-            for (AgendaClienteModel transactionHistoryModel : transactionHistoryModels) {
-                agendaClienteRepository.delete(transactionHistoryModel);    
+            List<AgendaClienteModel> agendaClienteModels = findAgendaByidAgenda(idAgenda);
+            for (AgendaClienteModel agendaClienteModel : agendaClienteModels) {
+                agendaClienteRepository.delete(agendaClienteModel);    
             }
             return true;
         } catch (Exception ex) {
@@ -64,15 +64,15 @@ public class AgendaClienteService {
         }
 	}
 
-	public List<AgendaClienteModel> findTransactionHistoryByMsisdn(String msisdn) {
-		return agendaClienteRepository.findBymsisdn(msisdn);
+	public List<AgendaClienteModel> findAgendaByidAgenda(String idAgenda) {
+		return agendaClienteRepository.findByidAgenda(idAgenda);
 	}
-
-	public long countDocuments(String msisdn, String strDate, String endDate) {
-		return agendaClienteRepository.countWithTimeStampRange(msisdn, strDate, endDate);
+/*
+	public long countDocuments(String idAgenda, String strDate, String endDate) {
+		return agendaClienteRepository.countWithTimeStampRange(idAgenda, strDate, endDate);
 
 	}
-
+/**/
 	public AgendaClienteRepository getAgendaClienteRepository() {
 		return agendaClienteRepository;
 	}

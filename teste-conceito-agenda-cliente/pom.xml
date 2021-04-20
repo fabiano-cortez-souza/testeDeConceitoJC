@@ -427,7 +427,7 @@
 						<repository>${docker.image.prefix}</repository>
 						<buildArgs>
 							<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-							<GCP_CREDENTIAL_FILE>appassembler-preassemble/credential/claro-flex-credential.json</GCP_CREDENTIAL_FILE>
+							<GCP_CREDENTIAL_FILE>appassembler-preassemble/credential/CREDENTIAL-POC-JC.json</GCP_CREDENTIAL_FILE>
 						</buildArgs>
 					</configuration>
 					<executions>

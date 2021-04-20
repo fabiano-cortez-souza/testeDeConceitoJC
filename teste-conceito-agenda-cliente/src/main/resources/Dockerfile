@@ -10,12 +10,12 @@ ARG GCP_CREDENTIAL_FILE
 COPY ${GCP_CREDENTIAL_FILE} /home/credential_gcp.json
 
 ENV GOOGLE_APPLICATION_CREDENTIALS=/home/credential_gcp.json
-ENV GOOGLE_PROJECT_ID=claro-flex-260515
-ENV GOOGLE_TOPIC_SINCRONO=claro-flex-pubsub-recarga-sincrono
-ENV GOOGLE_SUBSCRIPTION_SINCRONO=claro-flex-pubsub-recarga-sincrono-subscription
-ENV GOOGLE_TOPIC_ASSINCRONO=claro-flex-pubsub-recarga-assincrono
-ENV GOOGLE_SUBSCRIPTION_ASSINCRONO=claro-flex-pubsub-recarga-assincrono-subscription
-ENV GOOGLE_DATASTORE_NAMESPACE=claro-Flex
+ENV GOOGLE_PROJECT_ID=poc-jc
+ENV GOOGLE_TOPIC_SINCRONO=agenda-pubsub-sincrono
+ENV GOOGLE_SUBSCRIPTION_SINCRONO=agenda-pubsub-sincrono-sub
+ENV GOOGLE_TOPIC_ASSINCRONO=agenda-pubsub-assincrono
+ENV GOOGLE_SUBSCRIPTION_ASSINCRONO=agenda-pubsub-assincrono-sub
+ENV GOOGLE_DATASTORE_NAMESPACE=agendas
 ENV GOOGLE_BFF_KEY=123456dev
 ENV GOOGLE_APIGEE_TRANSACTIONHISTORY_ADDRESS=https://api-test.claro.com.br/mobile/v1/customerhistoryrefills
 ENV GOOGLE_APIGEE_CUSTOMERBALANCEANDDATE_ADDRESS=https://api-test.claro.com.br/mobile/v1/customerbalancesrecharge
