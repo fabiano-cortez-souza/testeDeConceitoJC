@@ -3,7 +3,6 @@ package br.com.fcs.agendacliente.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,10 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.fcs.agendacliente.business.AgendaClienteBusiness;
-import br.com.fcs.agendacliente.controller.AgendaClienteController;
 import br.com.fcs.agendacliente.repository.AgendaClienteRepository;
+import br.com.fcs.agendacliente.repository.ContactRepository;
 import br.com.fcs.agendacliente.service.AgendaClienteService;
-import br.com.fcs.agendacliente.vo.AgendaClienteVO;
 
 @WebMvcTest(controllers = AgendaClienteController.class)
 @ActiveProfiles("test")
@@ -32,6 +30,9 @@ class AgendaClienteControllerURLTest {
     @MockBean
 	AgendaClienteController agendaClienteControllerMock;
 
+    @MockBean
+    private ContactRepository contactRepositoryMock;
+    
 	@Mock
 	private AgendaClienteService agendaClienteServiceMock;
 
@@ -45,7 +46,7 @@ class AgendaClienteControllerURLTest {
 	private StringBuilder sbGetRequestParam = new StringBuilder();
 	private StringBuilder sbPostAgendaCliente = new StringBuilder();
 
-	private final String basePath = "/api/v1/transactionHistory/";
+	private final String basePath = "/api/v1/agendacliente/";
 	private final String msisdn = "5590988205339";
 	private final String startDate = "20191128";
 	private final String endDate = "20191129";
@@ -61,7 +62,7 @@ class AgendaClienteControllerURLTest {
 
 	@Test
 	void contexLoadsNotNull() throws Exception {
-		agendaClienteControllerMock = new AgendaClienteController();
+		agendaClienteControllerMock = new AgendaClienteController(contactRepositoryMock);
 		assertThat(agendaClienteControllerMock).isNotNull();
 	}
 

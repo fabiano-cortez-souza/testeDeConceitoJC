@@ -1,58 +1,104 @@
 package br.com.fcs.agendacliente.model;
 
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
-import org.springframework.data.annotation.Id;
+import java.util.Optional;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "agendaCliente")
 public class AgendaClienteModel {
+    private static final long serialVersionUID = 1L;
 
 	@Id
-	@Field(name = "idAgenda")
-	private Double idAgenda;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(updatable = false, nullable = false)
+	private Integer idAgenda;
+	
+	@Column(nullable = false)
+    private Integer idCliente;
+    
+	@Column(nullable = false)
+    private String nome;
+    
+	@Column(nullable = false)
+    private String endereco;
+    
+	@Column(nullable = false)
+    private String cpf;
 
-	@Field(name = "cliente")
-	private ClienteModel cliente;
-
-	@Field(name = "agendaDataHora")
+	@Column(nullable = false)
 	private String agendaDataHora;
 
-    @Field(name = "criacaoAgendaDataHora")
+	@Column(nullable = false)
     private String criacaoaAgendaDataHora;	
 	
-	@Field(name = "modeloCelular")
+	@Column(nullable = false)
 	private String modeloCelular;
 
-	@Field(name = "descricaoFalha")
+	@Column(nullable = false)
 	private String descricaoFalha;
 
+	@ManyToOne
+	private ClienteModel cliente;
+		
 	public AgendaClienteModel() {}
 
-    public AgendaClienteModel(Double idAgenda, ClienteModel cliente, String agendaDataHora,
-            String criacaoaAgendaDataHora, String modeloCelular, String descricaoFalha) {
+    public AgendaClienteModel(Integer idAgenda, Integer idCliente, String nome, String endereco, String cpf,
+            String agendaDataHora, String criacaoaAgendaDataHora, String modeloCelular, String descricaoFalha) {
         super();
         this.idAgenda = idAgenda;
-        this.cliente = cliente;
+        this.idCliente = idCliente;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.cpf = cpf;
         this.agendaDataHora = agendaDataHora;
         this.criacaoaAgendaDataHora = criacaoaAgendaDataHora;
         this.modeloCelular = modeloCelular;
         this.descricaoFalha = descricaoFalha;
     }
 
-    public Double getIdAgenda() {
+    public Integer getIdAgenda() {
         return idAgenda;
     }
 
-    public void setIdAgenda(Double idAgenda) {
+    public void setIdAgenda(Integer idAgenda) {
         this.idAgenda = idAgenda;
     }
 
-    public ClienteModel getCliente() {
-        return cliente;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(ClienteModel cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getAgendaDataHora() {
@@ -86,5 +132,13 @@ public class AgendaClienteModel {
     public void setDescricaoFalha(String descricaoFalha) {
         this.descricaoFalha = descricaoFalha;
     }
-	
+
+    public Optional<ClienteModel> getCliente() {
+        return Optional.ofNullable(cliente);
+    }
+
+    public void setCliente(ClienteModel cliente) {
+        this.cliente = cliente;
+    }
+
 }

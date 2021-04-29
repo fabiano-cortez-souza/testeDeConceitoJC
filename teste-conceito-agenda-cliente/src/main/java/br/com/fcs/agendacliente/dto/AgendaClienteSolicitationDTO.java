@@ -1,52 +1,131 @@
 package br.com.fcs.agendacliente.dto;
 
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
-
 public class AgendaClienteSolicitationDTO {
 	
-	@Field(name = "requestId")
-	private String requestId;
-
-	@Field(name = "msisdn")
-	private String msisdn;
-
-	@Field(name = "startDate")
+    private Integer idAgenda;  
+    private Integer idCliente;
+    private String nome;
+    private String endereco;
+    private String cpf;
+    private String agendaDataHora;
+    private String criacaoAgendaDataHora;
+    private String modeloCelular;
+    private String descricaoFalha;
 	private String startDate;
-
-	@Field(name = "endDate")
 	private String endDate;
-
-	@Field(name = "numPage")
 	private String numPage;
-
-	@Field(name = "numRecord")
 	private String numRecord;
 	
-	public String getMsisdn() {
-		return msisdn;
-	}
+	public AgendaClienteSolicitationDTO() {};
+	 
+    public AgendaClienteSolicitationDTO(Integer idAgenda, Integer idCliente, String nome, String endereco, String cpf,
+            String agendaDataHora, String criacaoAgendaDataHora, String modeloCelular, String descricaoFalha,
+            String startDate, String endDate, String numPage, String numRecord) {
+        super();
+        this.idAgenda = idAgenda;
+        this.idCliente = idCliente;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.cpf = cpf;
+        this.agendaDataHora = agendaDataHora;
+        this.criacaoAgendaDataHora = criacaoAgendaDataHora;
+        this.modeloCelular = modeloCelular;
+        this.descricaoFalha = descricaoFalha;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numPage = numPage;
+        this.numRecord = numRecord;
+    }
 
-	public void setMsisdn(String msisdn) {
-		this.msisdn = msisdn;
-	}
+    public Integer getIdAgenda() {
+        return idAgenda;
+    }
 
-	public String getStartDate() {
-		return startDate;
-	}
+    public void setIdAgenda(Integer idAgenda) {
+        this.idAgenda = idAgenda;
+    }
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
+    public Integer getIdCliente() {
+        return idCliente;
+    }
 
-	public String getEndDate() {
-		return endDate;
-	}
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getNumPage() {
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getAgendaDataHora() {
+        return agendaDataHora;
+    }
+
+    public void setAgendaDataHora(String agendaDataHora) {
+        this.agendaDataHora = agendaDataHora;
+    }
+
+    public String getCriacaoAgendaDataHora() {
+        return criacaoAgendaDataHora;
+    }
+
+    public void setCriacaoAgendaDataHora(String criacaoAgendaDataHora) {
+        this.criacaoAgendaDataHora = criacaoAgendaDataHora;
+    }
+
+    public String getModeloCelular() {
+        return modeloCelular;
+    }
+
+    public void setModeloCelular(String modeloCelular) {
+        this.modeloCelular = modeloCelular;
+    }
+
+    public String getDescricaoFalha() {
+        return descricaoFalha;
+    }
+
+    public void setDescricaoFalha(String descricaoFalha) {
+        this.descricaoFalha = descricaoFalha;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getNumPage() {
         return numPage;
     }
 
@@ -61,14 +140,5 @@ public class AgendaClienteSolicitationDTO {
     public void setNumRecord(String numRecord) {
         this.numRecord = numRecord;
     }
-
-    public String getRequestId() {
-		return requestId;
-	}
-
-	public void setRequestId(String requestId) {
-		this.requestId = requestId;
-	}
-
 	
 }

@@ -1,26 +1,24 @@
 package br.com.fcs.agendacliente.model;
 
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Entity;
-import org.springframework.cloud.gcp.data.datastore.core.mapping.Field;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity(name = "cliente")
 public class ClienteModel {
 
     @Id
-    @Field(name = "idCliente")
-    private Double idCliente;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer idCliente;
     
-    @Field(name = "nome")
     private String nome;
     
-    @Field(name = "endereco")
     private String endereco;
     
-    @Field(name = "cpf")
     private String cpf;
     
-    public ClienteModel(Double idCliente, String nome, String endereco, String cpf) {
+    public ClienteModel(Integer idCliente, String nome, String endereco, String cpf) {
         super();
         this.idCliente = idCliente;
         this.nome = nome;
@@ -28,11 +26,11 @@ public class ClienteModel {
         this.cpf = cpf;
     }
     
-    public Double getIdCliente() {
+    public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Double idCliente) {
+    public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
     }
 

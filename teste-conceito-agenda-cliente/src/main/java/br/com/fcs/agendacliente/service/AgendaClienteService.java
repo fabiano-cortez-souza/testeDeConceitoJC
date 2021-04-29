@@ -1,6 +1,8 @@
 package br.com.fcs.agendacliente.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,7 @@ public class AgendaClienteService {
 		}
 	}
 
-	public boolean deleteIdAgenda(String idAgenda) {
+	public boolean deleteIdAgenda(Integer idAgenda) {
         try {
             List<AgendaClienteModel> agendaClienteModels = findAgendaByidAgenda(idAgenda);
             for (AgendaClienteModel agendaClienteModel : agendaClienteModels) {
@@ -50,11 +52,12 @@ public class AgendaClienteService {
             return false;
         }
     }
-	
-	public String eventExists(Double agendaID) {
+	//AgendaClienteModel
+	public String eventExists(Integer agendaID) {
 	    String retorno = "N";
 	    try {
-	        if(agendaClienteRepository.existsById(agendaID.toString())) {
+	        //if(agendaClienteRepository.existsById(agendaID)) {
+	        if(!agendaClienteRepository.findByidAgenda(agendaID).isEmpty()) {    
 	            retorno = "S";
 	        }
 	        return retorno;    
@@ -64,8 +67,18 @@ public class AgendaClienteService {
         }
 	}
 
-	public List<AgendaClienteModel> findAgendaByidAgenda(String idAgenda) {
-		return agendaClienteRepository.findByidAgenda(idAgenda);
+	public List<AgendaClienteModel> findAgendaByidAgenda(Integer idAgenda) {
+	    
+	    Optional<AgendaClienteModel> optionalAgendaClienteModel = agendaClienteRepository.findById(idAgenda.toString());
+	    if (optionalAgendaClienteModel.isPresent()) {
+	        LOGGER.error("[FINDAGENDABYIDAGENDA] Agenda existe", optionalAgendaClienteModel.get().getCpf());
+	    }
+	    
+	    List<AgendaClienteModel> lista = new ArrayList<>();
+	    lista.add(optionalAgendaClienteModel.get());
+	    
+	    //return (List<AgendaClienteModel>) optionalAgendaClienteModel.get();
+		return lista;
 	}
 /*
 	public long countDocuments(String idAgenda, String strDate, String endDate) {

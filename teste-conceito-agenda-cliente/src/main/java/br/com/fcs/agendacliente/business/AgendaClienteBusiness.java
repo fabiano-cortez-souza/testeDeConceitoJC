@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -14,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import com.dynatrace.oneagent.sdk.OneAgentSDKFactory;
-import com.dynatrace.oneagent.sdk.api.OneAgentSDK;
 
 import br.com.fcs.agendacliente.constants.Constants;
 import br.com.fcs.agendacliente.dto.AgendaClienteSolicitationDTO;
@@ -42,12 +40,12 @@ public class AgendaClienteBusiness {
 	@Value("${apigee.credentials.bffkey}")
 	private String apigeeCredentialsBffkey;
 	
-	private OneAgentSDK oneAgentSdk = OneAgentSDKFactory.createInstance();
+	//private OneAgentSDK oneAgentSdk = OneAgentSDKFactory.createInstance();
 	
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(AgendaClienteBusiness.class);
 	
-	public AgendaClienteApiResponse saveAgendaCliente(AgendaClienteModel transactionHistoryModel, String bffKey) {
+	public AgendaClienteApiResponse saveAgendaCliente(AgendaClienteModel agendaClienteModel, String bffKey) {
 
 	    if(StringUtils.isBlank(bffKey) ) {
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_BFFKEY_INVALID, HttpStatus.ACCEPTED.value());
@@ -57,12 +55,12 @@ public class AgendaClienteBusiness {
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_BFFKEY_INVALID, HttpStatus.ACCEPTED.value());
         }
 	    
-        getDynatraceApigeeCredentialsBffkey();
+        //getDynatraceApigeeCredentialsBffkey();
         
-	    AgendaClienteApiResponse api = fieldValidationSave(transactionHistoryModel);
+	    AgendaClienteApiResponse api = fieldValidationSave(agendaClienteModel);
 
         if (api == null) {
-            if (agendaClienteService.save(transactionHistoryModel)){
+            if (agendaClienteService.save(agendaClienteModel)){
             	api = new AgendaClienteApiResponse(SuccessMessage.TRANSACTION_SUCCESS, HttpStatus.OK.value());
             }else {
             	api = new AgendaClienteApiResponse(ErrorType.HTTP_RESPONSE_TRANSACTION_HISTORY_DENIED, HttpStatus.ACCEPTED.value());
@@ -78,9 +76,9 @@ public class AgendaClienteBusiness {
 	 	 || StringUtils.isBlank(agendaCliente.getDescricaoFalha()) 
 		 || StringUtils.isBlank(agendaCliente.getModeloCelular()) 
 		 || StringUtils.isBlank(agendaCliente.getIdAgenda().toString()) 
-		 || StringUtils.isBlank(agendaCliente.getCliente().getCpf()) 
-		 || StringUtils.isBlank(agendaCliente.getCliente().getEndereco()) 
-		 || StringUtils.isBlank(agendaCliente.getCliente().getNome())) {
+		 || StringUtils.isBlank(agendaCliente.getCpf()) 
+		 || StringUtils.isBlank(agendaCliente.getEndereco()) 
+		 || StringUtils.isBlank(agendaCliente.getNome())) {
 			
 		    return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_REQUIRED_FIELD_NOT_FOUND, HttpStatus.ACCEPTED.value());
 		}
@@ -144,13 +142,13 @@ public class AgendaClienteBusiness {
 		return null;
 	}
 	
-	public AgendaClienteApiResponse findTransactionHistoryDocuments(AgendaClienteSolicitationDTO agendaClienteSolicitation, String bffKey) {
+	public AgendaClienteApiResponse findAgendaClienteDocuments(AgendaClienteSolicitationDTO agendaClienteSolicitation, String bffKey) {
         
 	    if(!jUnitTest) {
 	        agendaClienteModels = new ArrayList<>();
 	    }
 	    
-	    List<AgendaClienteModel> listaByMsisdn = new ArrayList<>();
+	    List<AgendaClienteModel> listaByAgendaCliente = new ArrayList<>();
 	    
 	    if(StringUtils.isBlank(bffKey) ) {
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_BFFKEY_INVALID, HttpStatus.ACCEPTED.value());
@@ -160,7 +158,7 @@ public class AgendaClienteBusiness {
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_BFFKEY_INVALID, HttpStatus.ACCEPTED.value());
         }
         
-        getDynatraceApigeeCredentialsBffkey();
+        //getDynatraceApigeeCredentialsBffkey();
 	    
         AgendaClienteApiResponse apiResponse = fieldValidationFind(agendaClienteSolicitation);
         List<AgendaClienteVO> listTransactionHistoryVO = new ArrayList<>();
@@ -174,10 +172,12 @@ public class AgendaClienteBusiness {
         if(apiResponse == null) {
         	
             if(!jUnitTest) {
-                listaByMsisdn = agendaClienteService.findAgendaByidAgenda(agendaClienteSolicitation.getMsisdn());
+                
+                
+                listaByAgendaCliente = agendaClienteService.findAgendaByidAgenda(agendaClienteSolicitation.getIdAgenda());
             }
             
-            adicionaTransactionHistoryModels(agendaClienteSolicitation, listaByMsisdn);
+            adicionaAgendaClienteModels(agendaClienteSolicitation, listaByAgendaCliente);
             
             long totalOfDocuments = agendaClienteModels.size();
             int totalPages = Utils.calculateTotalOfPages(totalOfDocuments, Integer.parseInt(agendaClienteSolicitation.getNumRecord()));
@@ -186,10 +186,10 @@ public class AgendaClienteBusiness {
                 totalPages = 1;
             }
             
-            inserirListaTransactionHistoryVO(listTransactionHistoryVO);
+            inserirListaAgendaClienteVO(listTransactionHistoryVO);
             
             apiResponse = new AgendaClienteApiResponse(SuccessMessage.TRANSACTION_SEARCH_SUCCESS,
-                                                            agendaClienteSolicitation.getMsisdn(),
+                                                            agendaClienteSolicitation.getCpf(),
                                                             numPage,
                                                             totalPages,
                                                             totalOfDocuments,
@@ -200,7 +200,7 @@ public class AgendaClienteBusiness {
         return apiResponse;
     }
 
-    private void adicionaTransactionHistoryModels(AgendaClienteSolicitationDTO transactionHistorySolicitation,
+    private void adicionaAgendaClienteModels(AgendaClienteSolicitationDTO transactionHistorySolicitation,
                                                   List<AgendaClienteModel> listaByMsisdn) {
         
         for (AgendaClienteModel transactionHistoryModel : listaByMsisdn) {
@@ -217,15 +217,15 @@ public class AgendaClienteBusiness {
         }
     }
 
-    private void inserirListaTransactionHistoryVO(List<AgendaClienteVO> listAgendaClienteVO) {
+    private void inserirListaAgendaClienteVO(List<AgendaClienteVO> listAgendaClienteVO) {
         if(!agendaClienteModels.isEmpty()) {
             for (AgendaClienteModel agendaClienteModel : agendaClienteModels) {
                 
                 AgendaClienteVO agendaClienteVO = new AgendaClienteVO();
-                agendaClienteVO.setCpf(agendaClienteModel.getCliente().getCpf());
-                agendaClienteVO.setEndereco(agendaClienteModel.getCliente().getEndereco());
-                agendaClienteVO.setIdCliente(agendaClienteModel.getCliente().getIdCliente());
-                agendaClienteVO.setNome(agendaClienteModel.getCliente().getNome());
+                agendaClienteVO.setCpf(agendaClienteModel.getCpf());
+                agendaClienteVO.setEndereco(agendaClienteModel.getEndereco());
+                agendaClienteVO.setIdCliente(agendaClienteModel.getIdCliente());
+                agendaClienteVO.setNome(agendaClienteModel.getNome());
                 listAgendaClienteVO.add(agendaClienteVO);
             }
         }
@@ -234,7 +234,7 @@ public class AgendaClienteBusiness {
     public AgendaClienteApiResponse fieldValidationFind(AgendaClienteSolicitationDTO agendaClienteSolicitation) {
         
         if(StringUtils.isBlank(agendaClienteSolicitation.getStartDate()) || 
-           StringUtils.isBlank(agendaClienteSolicitation.getMsisdn()) ||
+           StringUtils.isBlank(agendaClienteSolicitation.getCpf()) ||
            StringUtils.isBlank(agendaClienteSolicitation.getEndDate()) ||
            StringUtils.isBlank(agendaClienteSolicitation.getNumRecord())) {
             
@@ -246,12 +246,13 @@ public class AgendaClienteBusiness {
             
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_DATE_INVALID, HttpStatus.ACCEPTED.value());
         }
-        
+        /*
         if (!Utils.hasOnlyNumbers(agendaClienteSolicitation.getMsisdn()) ||
             agendaClienteSolicitation.getMsisdn().length() != Constants.MSISDN_LENGTH) {
             
             return new AgendaClienteApiResponse(ErrorType.FIELD_VALIDATION_MSISDN_INVALID, HttpStatus.ACCEPTED.value());
         }
+        /**/
                 
         if(!Utils.hasOnlyNumbers(agendaClienteSolicitation.getNumRecord()) ||
            Integer.parseInt(agendaClienteSolicitation.getNumRecord()) < 1 || 
@@ -278,9 +279,9 @@ public class AgendaClienteBusiness {
         }
     }
 
-    private void getDynatraceApigeeCredentialsBffkey() {
-        oneAgentSdk.addCustomRequestAttribute("agenda-cliente-apigeeCredentialsBffkey", apigeeCredentialsBffkey);
-    }
+    //private void getDynatraceApigeeCredentialsBffkey() {
+        //oneAgentSdk.addCustomRequestAttribute("agenda-cliente-apigeeCredentialsBffkey", apigeeCredentialsBffkey);
+    //}
     
 	public void setTransactionHistoryService(AgendaClienteService agendaClienteService) {
 		this.agendaClienteService = agendaClienteService;

@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.ericsson.flex</groupId>
-	<artifactId>flex-transaction-history</artifactId>
+    <groupId>br.com.fcs.agendacliente</groupId>
+	<artifactId>poc-agenda-cliente</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>flex-transaction-history</name>
+	<name>poc-agenda-cliente</name>
     
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -25,7 +25,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
-		<docker.image.prefix>flex-transaction-history</docker.image.prefix>
+		<docker.image.prefix>poc-agenda-cliente</docker.image.prefix>
         <springfox-version>2.9.2</springfox-version>
         <easymock.version>4.0.2</easymock.version>
         <powermock.version>2.0.7</powermock.version>
@@ -43,40 +43,40 @@
         
 		<sonar.exclusions>
 		    **/*pom*.xml,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/constants/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/dto/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/enums/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/model/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/repository/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/response/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/service/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/vo/*
+            /src/main/java/br/com/fcs/agendacliente/*,
+            /src/main/java/br/com/fcs/agendacliente/constants/*,
+            /src/main/java/br/com/fcs/agendacliente/dto/*,
+            /src/main/java/br/com/fcs/agendacliente/enums/*,
+            /src/main/java/br/com/fcs/agendacliente/model/*,
+            /src/main/java/br/com/fcs/agendacliente/repository/*,
+            /src/main/java/br/com/fcs/agendacliente/response/*,
+            /src/main/java/br/com/fcs/agendacliente/service/*,
+            /src/main/java/br/com/fcs/agendacliente/vo/*
 		</sonar.exclusions>
 		<sonar.coverage.exclusions>
 		    **/*pom*.xml,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/constants/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/dto/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/enums/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/model/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/repository/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/response/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/service/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/vo/*
+            /src/main/java/br/com/fcs/agendacliente/*,
+            /src/main/java/br/com/fcs/agendacliente/constants/*,
+            /src/main/java/br/com/fcs/agendacliente/dto/*,
+            /src/main/java/br/com/fcs/agendacliente/enums/*,
+            /src/main/java/br/com/fcs/agendacliente/model/*,
+            /src/main/java/br/com/fcs/agendacliente/repository/*,
+            /src/main/java/br/com/fcs/agendacliente/response/*,
+            /src/main/java/br/com/fcs/agendacliente/service/*,
+            /src/main/java/br/com/fcs/agendacliente/vo/*
 		</sonar.coverage.exclusions>
 		<sonar.cpd.exclusions>
 		    **/*pom*.xml,
-			/src/main/java/br/com/ericsson/flex/transactionhistory/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/constants/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/dto/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/enums/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/model/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/repository/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/response/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/service/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/utils/*,
-            /src/main/java/br/com/ericsson/flex/transactionhistory/vo/*
+			/src/main/java/br/com/fcs/agendacliente/*,
+            /src/main/java/br/com/fcs/agendacliente/constants/*,
+            /src/main/java/br/com/fcs/agendacliente/dto/*,
+            /src/main/java/br/com/fcs/agendacliente/enums/*,
+            /src/main/java/br/com/fcs/agendacliente/model/*,
+            /src/main/java/br/com/fcs/agendacliente/repository/*,
+            /src/main/java/br/com/fcs/agendacliente/response/*,
+            /src/main/java/br/com/fcs/agendacliente/service/*,
+            /src/main/java/br/com/fcs/agendacliente/utils/*,
+            /src/main/java/br/com/fcs/agendacliente/vo/*
 		</sonar.cpd.exclusions>
 	</properties>
 
@@ -180,6 +180,7 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
 			</dependency>
+        <!--
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-dynatrace</artifactId>
@@ -190,6 +191,7 @@
 			<version>1.7.0</version>
 			<scope>compile</scope>
 		</dependency>
+        -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -256,6 +258,7 @@
 			<artifactId>spring-cloud-gcp-autoconfigure</artifactId>
 		    <version>${org.springframework.cloud.version}</version>
 		</dependency>
+        <!--
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-gcp-data-datastore</artifactId>
@@ -266,6 +269,22 @@
 			<artifactId>spring-cloud-gcp-starter-data-datastore</artifactId>
 		    <version>${org.springframework.cloud.version}</version>
 		</dependency>
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>        
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-gcp-pubsub</artifactId>

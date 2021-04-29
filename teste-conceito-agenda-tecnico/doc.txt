@@ -1,0 +1,50 @@
+GOOGLE_APPLICATION_CREDENTIALS
+C:\Users\DELL\git\testeDeConceitoJC\teste-conceito-agenda-cliente\src\main\resources\fcs-agenda-credential.json
+C:\Users\DELL\git\testeDeConceitoJC\teste-conceito-agenda-cliente\src\main\resources\CREDENTIAL-POC-JC-DATASTORE.json
+
+
+GOOGLE_PROJECT_ID
+poc-jc
+
+
+
+GOOGLE_DATASTORE_NAMESPACE
+
+
+
+
+
+ENV GOOGLE_TOPIC_SINCRONO=agenda-pubsub-sincrono
+ENV GOOGLE_SUBSCRIPTION_SINCRONO=agenda-pubsub-sincrono-sub
+ENV GOOGLE_TOPIC_ASSINCRONO=agenda-pubsub-assincrono
+ENV GOOGLE_SUBSCRIPTION_ASSINCRONO=agenda-pubsub-assincrono-sub
+
+
+
+WebCalendar foi instalado com sucesso e pode ser acessado pelo domínio :
+https://testedeconceito.com.br/calendario
+Acesso ao painel da ferramenta : https://testedeconceito.com.br/calendario/admin.php
+
+
+
+https://testedeconceito.com.br/TutorialAngularJsEventCalendar
+
+
+Docker::
+ cd ~/git/testeDeConceitoJC/teste-conceito-agenda-cliente
+ docker tag poc-agenda-cliente gcr.io/poc-jc/poc-agenda-cliente
+ docker push gcr.io/poc-jc/poc-agenda-cliente
+ 
+ 
+ 
+ 
+ 
+ 
+ gcloud container clusters get-credentials nginx-1-cluster --zone southamerica-east1-c --project poc-jc && kubectl port-forward $(kubectl get pod --selector="app=nginx-1" --output jsonpath='{.items[0].metadata.name}') 8080:80
+
+https://cloud.google.com/kubernetes-engine/docs/how-to/updating-apps?_ga=2.163803455.-1673207183.1618461613&_gac=1.192749144.1618461671.Cj0KCQjwpdqDBhCSARIsAEUJ0hOXpCDGJUBZKhH5SBaQrO98nVbzQisHBCESH6djfL4kfoHHH7NJ7qsaApeZEALw_wcB
+
+
+
+Usuário: hgtes761_agendas
+Banco de dados: hgtes761_Agendas

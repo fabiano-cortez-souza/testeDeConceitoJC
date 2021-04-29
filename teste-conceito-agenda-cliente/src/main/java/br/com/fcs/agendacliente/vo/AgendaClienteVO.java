@@ -13,7 +13,7 @@ public class AgendaClienteVO {
     @Id
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("idCliente")
-    private Double idCliente;
+    private Integer idCliente;
     
     @JsonInclude(Include.NON_NULL)
     @JsonProperty("nome")
@@ -29,7 +29,7 @@ public class AgendaClienteVO {
   
     public AgendaClienteVO() {}
      
-    public AgendaClienteVO(Double idCliente, String nome, String endereco, String cpf) {
+    public AgendaClienteVO(Integer idCliente, String nome, String endereco, String cpf) {
         super();
         this.idCliente = idCliente;
         this.nome = nome;
@@ -37,11 +37,11 @@ public class AgendaClienteVO {
         this.cpf = cpf;
     }
 
-    public Double getIdCliente() {
+    public Integer getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(Double idCliente) {
+    public void setIdCliente(Integer idCliente) {
         this.idCliente = idCliente;
     }
 

@@ -41,7 +41,7 @@ class JsonUtilsTest {
 		
 		String timestamp = ZonedDateTime.now().toString();
 	    
-	    Double idCliente = 1d;
+		Integer idCliente = 1;
         String nome = "teste"; 
         String endereco = "Rua teste"; 
         String cpf = "111.111.111-11";
